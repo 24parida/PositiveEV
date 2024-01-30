@@ -13,7 +13,7 @@ class API:
     def setAPI(self, api):
         self.API_KEY = api
 
-    #### first four methods are adapted from prop-odds @ https://github.com/M4THYOU/prop_odds_python_example/blob/main/main.py
+    #### first 3 methods are adapted from prop-odds @ https://github.com/M4THYOU/prop_odds_python_example/blob/main/main.py
     def get_request(self, url):
         response = requests.get(url)
         if response.status_code == 200:
@@ -23,30 +23,18 @@ class API:
             raise myException("ERROR 401")
         raise myException(f"ERROR {response.status_code}")
 
-    def get_nfl_games(self):
-        now = datetime.now()
-        query_params = {
-            'date': now.strftime('%Y-%m-%d'),
-            'tz': 'America/New_York',
-            'api_key': self.API_KEY,
-        }
-        params = urllib.parse.urlencode(query_params)
-        url = self.BASE_URL + '/beta/games/nfl?' + params
-        return self.get_request(url)
-
-    def get_nba_games(self):
-        now = datetime.now()
-        query_params = {
-            'date': now.strftime('%Y-%m-%d'),
-            'tz': 'America/New_York',
-            'api_key': self.API_KEY,
-        }
-        params = urllib.parse.urlencode(query_params)
-        url = self.BASE_URL + '/beta/games/nba?' + params
-        print(url)
-        return self.get_request(url)
 
     def get_most_recent_odds(self, game_id, market):
+        now = datetime.now()
+        query_params = {
+            'api_key': self.API_KEY,
+            'end_date_time': now.strftime('%Y-%m-%d')
+        }
+        params = urllib.parse.urlencode(query_params)
+        url = self.BASE_URL + '/v1/odds/' + game_id + '/' + market + '?' + params
+        return self.get_request(url)
+    
+    def old_get_most_recent_odds(self, game_id, market):
         query_params = {
             'api_key': self.API_KEY,
         }
@@ -54,9 +42,13 @@ class API:
         url = self.BASE_URL + '/beta/odds/' + game_id + '/' + market + '?' + params
         return self.get_request(url)
     
+
+    
     def get_fantasy_lines(self, leauge):
+        now = datetime.now()
         query_params = {
             'api_key': self.API_KEY,
+            'end_date_time': now.strftime('%Y-%m-%d')
         }
 
         params = urllib.parse.urlencode(query_params)
