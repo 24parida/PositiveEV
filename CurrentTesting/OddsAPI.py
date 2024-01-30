@@ -8,7 +8,7 @@ class myException(Exception):
 class API:
     def __init__(self):
         self.BASE_URL = "https://api.prop-odds.com"
-        self.API_KEY = "OyQa6k2MfpjIkUsLpeM6N98X6C1s7bF7cDM94Iw1xU"
+        self.API_KEY = "oQK8ATTYc0ug8atzBGvgLKPOKWCaVSMOpbnWPmnE8E"
     
     def setAPI(self, api):
         self.API_KEY = api
@@ -53,8 +53,17 @@ class API:
         params = urllib.parse.urlencode(query_params)
         url = self.BASE_URL + '/beta/odds/' + game_id + '/' + market + '?' + params
         return self.get_request(url)
+    
+    def get_fantasy_lines(self, leauge):
+        query_params = {
+            'api_key': self.API_KEY,
+        }
 
-    def get_fantasy_lines(self, game_id, market):
+        params = urllib.parse.urlencode(query_params)
+        url = self.BASE_URL + '/v1/fantasy_snapshot/' + leauge + '?' + params
+        return self.get_request(url)
+
+    def old_get_fantasy_lines(self, game_id, market):
         query_params = {
             'api_key': self.API_KEY,
         }
