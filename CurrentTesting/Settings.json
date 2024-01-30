@@ -1,0 +1,3 @@
+{
+	"NBA":{"markets": ["player_rebounds_over_under", "player_points_rebounds_over_under", "player_points_over_under", "player_blocks_steals_over_under", "player_blocks_over_under", "player_assists_rebounds_over_under", "player_assists_rebounds_over_under", "player_assists_points_rebounds_over_under", "player_assists_points_over_under", "player_assists_over_under", "player_steals_over_under", "player_threes_over_under"]}
+}
