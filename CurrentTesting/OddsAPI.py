@@ -38,6 +38,17 @@ class API:
         url = self.BASE_URL + '/beta/games/nba?' + params
         return self.get_request(url)
 
+    def get_nfl_games(self):
+        now = datetime.now()
+        query_params = {
+            'date': now.strftime('%Y-%m-%d'),
+            'tz': 'America/New_York',
+            'api_key': self.API_KEY,
+        }
+        params = urllib.parse.urlencode(query_params)
+        url = self.BASE_URL + '/beta/games/nfl?' + params
+        return self.get_request(url)
+
 
     def get_most_recent_odds(self, game_id, market):
         now = datetime.now()
