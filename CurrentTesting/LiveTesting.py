@@ -3,6 +3,7 @@ import pandas as pd
 import sys
 from tqdm import tqdm
 
+
 ## pivot: converts a dataframe that contains two seperate rows for each player (one for over, one for under) to have one row for each player
 def pivot(df):
     pivot_df = pd.pivot_table(df, values='odds', index=['handicap', 'participant_name'], columns='name').reset_index()
@@ -99,13 +100,9 @@ except: saved_bets = pd.DataFrame()
 ## save formatted best bets, and raw data to for check_player() function
 bets = pd.DataFrame()
 
-
-
 ## run though each game and each market
 for game in games:
-    for market in markets:
-        print(game, market)
-            
+    for market in markets:            
         # get sportsbook odds
         ## switch to next api key if ran out of uses
 
@@ -168,16 +165,17 @@ for game in games:
         if final.shape[0] > 0: 
             bets = pd.concat([bets, final[['participant_name', 'ev', 'market', 'line', 'over_odds', 'under_odds', 'game']]])
 
+try:
+    bets = bets.sort_values(by=['ev'], ascending=False)
+    bets = bets.dropna()
+    bets = bets.drop_duplicates(keep='first', ignore_index=True)
 
-bets = bets.sort_values(by=['ev'], ascending=False)
-bets = bets.dropna()
-bets = bets.drop_duplicates(keep='first', ignore_index=True)
 
-best_bets = bets[bets['ev'] > 4.5]
+    saved_bets = pd.concat([saved_bets, bets])
 
-saved_bets = pd.concat([saved_bets, best_bets])
+    ## get rid of players that already exist
+    saved_bets = saved_bets.drop_duplicates(subset=['participant_name', 'market', 'line'], keep='first')
 
-## get rid of players that already exist
-saved_bets = saved_bets.drop_duplicates(subset=['participant_name', 'market', 'line'], keep='first')
-
-download_bets(saved_bets)
+    download_bets(saved_bets)
+except Exception as e:
+    print(str(e))
