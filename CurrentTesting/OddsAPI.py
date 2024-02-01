@@ -16,6 +16,9 @@ class API:
     
     def setAPI(self, api):
         self.API_KEY = api
+    
+    def getAPI(self):
+        return self.API_KEY
 
     #### first 3 methods are adapted from prop-odds @ https://github.com/M4THYOU/prop_odds_python_example/blob/main/main.py
     def get_request(self, url):
@@ -59,16 +62,7 @@ class API:
         params = urllib.parse.urlencode(query_params)
         url = self.BASE_URL + '/v1/odds/' + game_id + '/' + market + '?' + params
         return self.get_request(url)
-    
-    def old_get_most_recent_odds(self, game_id, market):
-        query_params = {
-            'api_key': self.API_KEY,
-        }
-        params = urllib.parse.urlencode(query_params)
-        url = self.BASE_URL + '/beta/odds/' + game_id + '/' + market + '?' + params
-        return self.get_request(url)
-    
-
+        
     def get_fantasy_lines(self, leauge="NBA"):
 
         data = requests.get(self.UNDERDOG).json()
@@ -140,4 +134,3 @@ class API:
         df2['handicap'] = df2['handicap'].astype(float)
 
         return df2
-
